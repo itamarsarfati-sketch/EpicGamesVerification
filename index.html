@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html lang="he">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>התחברות</title>
+
+    <style>
+
+        body {
+
+            font-family: Arial;
+
+            direction: rtl;
+
+            background-color: #f0f0f0;
+
+        }
+
+        .box {
+
+            width: 300px;
+
+            margin: 100px auto;
+
+            padding: 20px;
+
+            background: white;
+
+            border-radius: 10px;
+
+            text-align: center;
+
+        }
+
+        input {
+
+            width: 90%;
+
+            padding: 8px;
+
+            margin: 8px 0;
+
+        }
+
+        button {
+
+            padding: 10px 20px;
+
+            cursor: pointer;
+
+        }
+
+        .error {
+
+            color: red;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+
+<div class="box">
+
+    <h2>התחברות</h2>
+
+
+
+    <input type="email" id="email" placeholder="אימייל">
+
+    <input type="password" id="password" placeholder="סיסמה">
+
+
+
+    <button onclick="login()">התחבר</button>
+
+
+
+    <p id="message" class="error"></p>
+
+</div>
+
+
+
+<script>
+
+    function login() {
+
+        var email = document.getElementById("email").value;
+
+        var password = document.getElementById("password").value;
+
+
+
+        if (email === "" || password === "") {
+
+            document.getElementById("message").innerText =
+
+                "חובה למלא אימייל וסיסמה";
+
+        } else {
+
+            document.getElementById("message").style.color = "green";
+
+            document.getElementById("message").innerText =
+
+                "התחברת בהצלחה!";
+
+        }
+
+    }
+
+</script>
+
+
+
+</body>
+
+</html>
+
