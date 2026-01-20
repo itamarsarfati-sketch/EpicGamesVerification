@@ -1,128 +1,159 @@
 <!DOCTYPE html>
-
-<html lang="he">
-
+<html lang="he" dir="rtl">
 <head>
-
     <meta charset="UTF-8">
-
-    <title>התחברות</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>התחברות לחשבון Epic Games</title>
     <style>
+        /* הצבעים הרשמיים של Epic */
+        :root {
+            --bg-color: #121212;
+            --card-bg: #202020;
+            --epic-blue: #0074e4;
+            --epic-blue-hover: #007bf5;
+            --input-bg: #ffffff;
+            --text-grey: #a8a8a8;
+        }
 
         body {
-
-            font-family: Arial;
-
-            direction: rtl;
-
-            background-color: #f0f0f0;
-
+            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: white;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
         .box {
-
-            width: 300px;
-
-            margin: 100px auto;
-
-            padding: 20px;
-
-            background: white;
-
-            border-radius: 10px;
-
+            width: 100%;
+            max-width: 440px;
+            padding: 40px;
+            background: var(--card-bg);
+            border-radius: 4px;
             text-align: center;
+            box-sizing: border-box;
+        }
 
+        .logo {
+            width: 45px;
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* עיצוב שדות קלט כמו במקור */
+        .input-group {
+            margin-bottom: 15px;
+            text-align: right;
         }
 
         input {
-
-            width: 90%;
-
-            padding: 8px;
-
-            margin: 8px 0;
-
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #404040;
+            background-color: #252525;
+            color: white;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+            transition: border-color 0.2s;
         }
 
+        input:focus {
+            border-color: var(--text-grey);
+            outline: none;
+            background-color: #303030;
+        }
+
+        /* הכפתור הכחול המפורסם */
         button {
-
-            padding: 10px 20px;
-
+            width: 100%;
+            padding: 16px;
+            background-color: var(--epic-blue);
+            color: white;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+            text-transform: uppercase;
+            margin-top: 20px;
+            transition: background-color 0.2s;
+            letter-spacing: 1px;
+        }
 
+        button:hover {
+            background-color: var(--epic-blue-hover);
+        }
+
+        .links {
+            margin-top: 25px;
+            font-size: 13px;
+            color: var(--text-grey);
+        }
+
+        .links a {
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid white;
+            padding-bottom: 2px;
         }
 
         .error {
-
-            color: red;
-
+            margin-top: 15px;
+            font-size: 13px;
+            min-height: 20px;
         }
-
     </style>
-
 </head>
-
 <body>
 
-
-
 <div class="box">
-
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/31/Epic_Games_logo.svg" alt="Epic Logo" class="logo">
+    
     <h2>התחברות</h2>
 
+    <div class="input-group">
+        <input type="email" id="email" placeholder="כתובת אימייל">
+    </div>
+    <div class="input-group">
+        <input type="password" id="password" placeholder="סיסמה">
+    </div>
 
+    <button onclick="login()">כניסה לחשבון</button>
 
-    <input type="email" id="email" placeholder="אימייל">
-
-    <input type="password" id="password" placeholder="סיסמה">
-
-
-
-    <button onclick="login()">התחבר</button>
-
-
+    <div class="links">
+        <p>אין לך חשבון? <a href="#">הירשם</a></p>
+    </div>
 
     <p id="message" class="error"></p>
-
 </div>
 
-
-
 <script>
-
     function login() {
-
-        var email = document.getElementById("email").value;
-
-        var password = document.getElementById("password").value;
-
-
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const message = document.getElementById("message");
 
         if (email === "" || password === "") {
-
-            document.getElementById("message").innerText =
-
-                "חובה למלא אימייל וסיסמה";
-
+            message.style.color = "#ff3e3e";
+            message.innerText = "שגיאה: יש למלא את כל השדות";
         } else {
-
-            document.getElementById("message").style.color = "green";
-
-            document.getElementById("message").innerText =
-
-                "התחברת בהצלחה!";
-
+            message.style.color = "#2ecc71";
+            message.innerText = "בודק נתונים...";
+            // כאן אפשר להוסיף מעבר דף
         }
-
     }
-
 </script>
 
-
-
 </body>
-
 </html>
-
